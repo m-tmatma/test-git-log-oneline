@@ -5,4 +5,10 @@ for /f "usebackq" %%s in (`git log --oneline ^| wc -l ^| sed -e "s/[ \t]*//g"`) 
 	set REVISIONS=%%s
 )
 
-echo REVISIONS = %REVISIONS%
+echo REVISIONS                     = %REVISIONS%
+echo APPVEYOR                      = %APPVEYOR%
+echo APPVEYOR_URL                  = %APPVEYOR_URL%
+echo APPVEYOR_PULL_REQUEST_NUMBER  = %APPVEYOR_PULL_REQUEST_NUMBER%
+echo APPVEYOR_REPO_PROVIDER        = %APPVEYOR_REPO_PROVIDER%
+echo APPVEYOR_REPO_BRANCH          = %APPVEYOR_REPO_BRANCH%
+echo APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH = %APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH%
