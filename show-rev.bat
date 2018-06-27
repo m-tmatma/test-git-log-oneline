@@ -19,15 +19,23 @@ echo APPVEYOR_REPO_TAG_NAME            = %APPVEYOR_REPO_TAG_NAME%
 echo APPVEYOR_PULL_REQUEST_HEAD_COMMIT = %APPVEYOR_PULL_REQUEST_HEAD_COMMIT%
 echo APPVEYOR_REPO_COMMIT              = %APPVEYOR_REPO_COMMIT%
 
+for /f "usebackq" %%s in (`git show -s --format^=%%H`) do (
+    set COMMITID=%%s
+)
+echo COMMITID                          = %COMMITID%
+
 set PREFIX_GITHUB=https://github.com
 if "%APPVEYOR_REPO_PROVIDER%" == "gitHub" (
 	@rem Not Pull Request
 	if "%APPVEYOR_PULL_REQUEST_NUMBER%" == "" (
 		@rem https://github.com/m-tmatma/test-git-log-oneline/commit/32b2f9dcede522242b0805f4a12fa290d1c14018
-		set COMMIT_URL=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/commit/%APPVEYOR_REPO_COMMIT%
+		set COMMIT_URL_APPVEYOR=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/commit/%APPVEYOR_REPO_COMMIT%
+		set COMMIT_URL_GIT=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/commit/%COMMITID%
 	) else (
 		@rem https://github.com/m-tmatma/test-git-log-oneline/pull/2/commits/4a93c7a41c226d75c9e5dbc6031cabd8730cd4a3
-		set COMMIT_URL=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/pull/commits/%APPVEYOR_PULL_REQUEST_NUMBER%/%APPVEYOR_REPO_COMMIT%
+		set COMMIT_URL_APPVEYOR=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/pull/%APPVEYOR_PULL_REQUEST_NUMBER%/commits/%APPVEYOR_REPO_COMMIT%
+		set COMMIT_URL_GIT=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/pull/%APPVEYOR_PULL_REQUEST_NUMBER%/commits/%COMMITID%
 	)
 )
-echo COMMIT_URL                        = %COMMIT_URL%
+echo COMMIT_URL_APPVEYOR                   = %COMMIT_URL_APPVEYOR%
+echo COMMIT_URL_GIT                        = %COMMIT_URL_GIT%
