@@ -11,6 +11,9 @@ if "%APPVEYOR_REPO_PROVIDER%" == "gitHub" (
 	)
 )
 
+set APPVEYOR_SHORTHASH=%APPVEYOR_REPO_COMMIT:~0,8% 
+set APPVEYOR_SHORTHASH_PR_HEAD=%APPVEYOR_PULL_REQUEST_HEAD_COMMIT:~0,8% 
+
 @echo SHORT_COMMITID: %SHORT_COMMITID%
 @echo COMMITID: %COMMITID%
 @echo GIT_URL: %GIT_URL%
@@ -22,6 +25,8 @@ if "%APPVEYOR_REPO_PROVIDER%" == "gitHub" (
 @echo APPVEYOR_BUILD_NUMBER : %APPVEYOR_BUILD_NUMBER%
 @echo COMMIT_URL            : %COMMIT_URL%
 @echo COMMIT_URL_PR_HEAD    : %COMMIT_URL_PR_HEAD%
+@echo APPVEYOR_SHORTHASH          : %APPVEYOR_SHORTHASH%
+@echo APPVEYOR_SHORTHASH_PR_HEAD  : %APPVEYOR_SHORTHASH_PR_HEAD%
 
 : Output githash.h
 set GITHASH_H=githash.h
@@ -84,13 +89,25 @@ if "%APPVEYOR_BUILD_NUMBER%" == "" (
 if "%COMMIT_URL%" == "" (
 	type nul                                                          >> %GITHASH_H_TMP%
 ) else (
-	echo #define COMMIT_URL     "%COMMIT_URL%"                        >> %GITHASH_H_TMP%
+	echo #define COMMIT_URL             "%COMMIT_URL%"                >> %GITHASH_H_TMP%
 )
 
 if "%COMMIT_URL_PR_HEAD%" == "" (
 	type nul                                                          >> %GITHASH_H_TMP%
 ) else (
 	echo #define COMMIT_URL_PR_HEAD     "%COMMIT_URL_PR_HEAD%"        >> %GITHASH_H_TMP%
+)
+
+if "%APPVEYOR_SHORTHASH%" == "" (
+	type nul                                                                    >> %GITHASH_H_TMP%
+) else (
+	echo #define APPVEYOR_SHORTHASH             "%APPVEYOR_SHORTHASH%"          >> %GITHASH_H_TMP%
+)
+
+if "%APPVEYOR_SHORTHASH_PR_HEAD%" == "" (
+	type nul                                                                    >> %GITHASH_H_TMP%
+) else (
+	echo #define APPVEYOR_SHORTHASH_PR_HEAD     "%APPVEYOR_SHORTHASH_PR_HEAD%"  >> %GITHASH_H_TMP%
 )
 
 fc %GITHASH_H% %GITHASH_H_TMP% 1>nul 2>&1
