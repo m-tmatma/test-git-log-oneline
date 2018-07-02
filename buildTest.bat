@@ -94,6 +94,13 @@ if "%APPVEYOR_BUILD_NUMBER%" == "" (
 	echo #define APPVEYOR_BUILD_NUMBER_INT  %APPVEYOR_BUILD_NUMBER%       >> %GITHASH_H_TMP%
 )
 
+if "%APPVEYOR_PULL_REQUEST_NUMBER%" == "" (
+	type nul                                                                            >> %GITHASH_H_TMP%
+) else (
+	echo #define APPVEYOR_PULL_REQUEST_NUMBER     "%APPVEYOR_PULL_REQUEST_NUMBER%"      >> %GITHASH_H_TMP%
+	echo #define APPVEYOR_PULL_REQUEST_NUMBER_INT  %APPVEYOR_PULL_REQUEST_NUMBER%       >> %GITHASH_H_TMP%
+)
+
 if "%GITHUB_COMMIT_URL%" == "" (
 	type nul                                                          >> %GITHASH_H_TMP%
 ) else (
