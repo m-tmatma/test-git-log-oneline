@@ -1,13 +1,13 @@
 
 set PREFIX_GITHUB=https://github.com
 if "%APPVEYOR_REPO_PROVIDER%" == "gitHub" (
-	set COMMIT_URL=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/commit/%APPVEYOR_REPO_COMMIT%
+	set GITHUB_COMMIT_URL=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/commit/%APPVEYOR_REPO_COMMIT%
 	@rem Not Pull Request
 	if "%APPVEYOR_PULL_REQUEST_NUMBER%" == "" (
 		@rem No PR
 	) else (
 		@rem PR URL
-		set COMMIT_URL_PR_HEAD=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/pull/%APPVEYOR_PULL_REQUEST_NUMBER%/commits/%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%
+		set GITHUB_COMMIT_URL_PR_HEAD=%PREFIX_GITHUB%/%APPVEYOR_REPO_NAME%/pull/%APPVEYOR_PULL_REQUEST_NUMBER%/commits/%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%
 	)
 )
 
@@ -31,8 +31,8 @@ if not "%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%" == "" (
 @echo APPVEYOR_PROJECT_SLUG : %APPVEYOR_PROJECT_SLUG%
 @echo APPVEYOR_BUILD_VERSION: %APPVEYOR_BUILD_VERSION%
 @echo APPVEYOR_BUILD_NUMBER : %APPVEYOR_BUILD_NUMBER%
-@echo COMMIT_URL            : %COMMIT_URL%
-@echo COMMIT_URL_PR_HEAD    : %COMMIT_URL_PR_HEAD%
+@echo GITHUB_COMMIT_URL           : %GITHUB_COMMIT_URL%
+@echo GITHUB_COMMIT_URL_PR_HEAD   : %GITHUB_COMMIT_URL_PR_HEAD%
 @echo APPVEYOR_SHORTHASH          : %APPVEYOR_SHORTHASH%
 @echo APPVEYOR_SHORTHASH_PR_HEAD  : %APPVEYOR_SHORTHASH_PR_HEAD%
 
@@ -94,16 +94,16 @@ if "%APPVEYOR_BUILD_NUMBER%" == "" (
 	echo #define APPVEYOR_BUILD_NUMBER_INT  %APPVEYOR_BUILD_NUMBER%       >> %GITHASH_H_TMP%
 )
 
-if "%COMMIT_URL%" == "" (
+if "%GITHUB_COMMIT_URL%" == "" (
 	type nul                                                          >> %GITHASH_H_TMP%
 ) else (
-	echo #define COMMIT_URL             "%COMMIT_URL%"                >> %GITHASH_H_TMP%
+	echo #define GITHUB_COMMIT_URL             "%GITHUB_COMMIT_URL%"  >> %GITHASH_H_TMP%
 )
 
-if "%COMMIT_URL_PR_HEAD%" == "" (
-	type nul                                                          >> %GITHASH_H_TMP%
+if "%GITHUB_COMMIT_URL_PR_HEAD%" == "" (
+	type nul                                                                    >> %GITHASH_H_TMP%
 ) else (
-	echo #define COMMIT_URL_PR_HEAD     "%COMMIT_URL_PR_HEAD%"        >> %GITHASH_H_TMP%
+	echo #define GITHUB_COMMIT_URL_PR_HEAD     "%GITHUB_COMMIT_URL_PR_HEAD%"    >> %GITHASH_H_TMP%
 )
 
 if "%APPVEYOR_SHORTHASH%" == "" (
