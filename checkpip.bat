@@ -3,4 +3,6 @@ if not "%ERRORLEVEL%" == "0" (
 	@echo NOTE: No pip command
 ) else (
 	@echo NOTE: found pip command
+	
+	pip --help
 )
