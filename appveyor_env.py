@@ -76,6 +76,18 @@ class AppveyorEnv():
 			if len(commitHashPRHead) >= 8:
 				self.var["APPVEYOR_SHORTHASH_PR_HEAD"] = commitHashPRHead[0:8]
 
+		if "APPVEYOR_URL" in self.env and "APPVEYOR_ACCOUNT_NAME" in self.env:
+			if "APPVEYOR_PROJECT_SLUG" in self.env and "APPVEYOR_BUILD_VERSION" in self.env:
+				temp = [
+					self.env["APPVEYOR_URL"],
+					"project",
+					self.env["APPVEYOR_ACCOUNT_NAME"],
+					self.env["APPVEYOR_PROJECT_SLUG"],
+					"build",
+					self.env["APPVEYOR_BUILD_VERSION"],
+				]
+				self.var["APPVEYOR_BUILD_URL"] = '/'.join(temp)
+
 		if "APPVEYOR_REPO_PROVIDER" in self.env:
 			if self.env["APPVEYOR_REPO_PROVIDER"] == "gitHub":
 				if "APPVEYOR_REPO_NAME" in self.env:
