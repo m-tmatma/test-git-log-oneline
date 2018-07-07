@@ -6,3 +6,10 @@ if not "%ERRORLEVEL%" == "0" (
 	
 	pip --help
 )
+
+
+if "%APPVEYOR%" == "True" (
+	@echo NOTE: appveyor
+) else (
+	@echo NOTE: not appveyor
+)
