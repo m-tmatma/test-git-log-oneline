@@ -180,12 +180,13 @@ class AppveyorEnv():
 			print (key, self.var[key])
 
 	def saveAppveyorEnv(file):
-		for key in self.keysEnv:
-			with open(file, "w") as fout:
+		with open(file, "w") as fout:
+			for key in self.keysEnv:
 				if key in self.env.keys():
 					fout.write("set " + key + "=" + self.env[key] + "\n")
 				else:
 					fout.write("set " + key + "=" + "\n")
+		print ("wrote " + file)
 
 def main():
 	appveyor = AppveyorEnv()
