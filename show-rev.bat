@@ -43,4 +43,5 @@ if "%APPVEYOR_REPO_PROVIDER%" == "gitHub" (
 echo COMMIT_URL                   = %COMMIT_URL%
 echo COMMIT_URL_PR_HEAD           = %COMMIT_URL_PR_HEAD%
 
+@rem ci skip
 echo test
