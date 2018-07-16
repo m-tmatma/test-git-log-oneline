@@ -197,7 +197,7 @@ def main():
 	print (appveyor.getBlobURLWithLine(file, 1))
 	print (appveyor.getBlobURLWithLines(file, 9, 15))
 	
-	if len(sys.argv) > 2:
+	if len(sys.argv) > 1:
 		appveyor.saveAppveyorEnv(sys.argv[1])
 
 if __name__ == '__main__':
