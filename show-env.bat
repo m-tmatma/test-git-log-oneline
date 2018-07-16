@@ -1,2 +1,2 @@
-set
-set > all-env.txt
+set | sort
+set | sort > all-env.txt
