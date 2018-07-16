@@ -189,8 +189,11 @@ class AppveyorEnv():
 		print ("wrote " + file)
 
 	def saveAppveyorAllEnv(self, file):
+		allKeys = os.environ.keys()
+		allKeys.sort()
+	
 		with open(file, "w") as fout:
-			for key in os.environ.keys():
+			for key in allKeys:
 				fout.write("set " + key + "=" + os.environ[key] + "\n")
 		print ("wrote " + file)
 
