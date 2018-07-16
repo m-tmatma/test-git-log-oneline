@@ -179,7 +179,7 @@ class AppveyorEnv():
 		for key in self.var.keys():
 			print (key, self.var[key])
 
-	def saveAppveyorEnv(file):
+	def saveAppveyorEnv(self, file):
 		with open(file, "w") as fout:
 			for key in self.keysEnv:
 				if key in self.env.keys():
