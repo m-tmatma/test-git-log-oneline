@@ -179,6 +179,14 @@ class AppveyorEnv():
 		for key in self.var.keys():
 			print (key, self.var[key])
 
+	def saveAppveyorEnv(file):
+		for key in self.keysEnv:
+			with open(file, "w") as fout:
+				if key in self.env.keys():
+					fout.write("set " + key + "=" + self.env[key] + "\n")
+				else:
+					fout.write("set " + key + "=" + "\n")
+
 def main():
 	appveyor = AppveyorEnv()
 	appveyor.printAll()
@@ -187,6 +195,9 @@ def main():
 	print (appveyor.getBlobURL(file))
 	print (appveyor.getBlobURLWithLine(file, 1))
 	print (appveyor.getBlobURLWithLines(file, 9, 15))
+	
+	if len(sys.argv) > 2:
+		appveyor.saveAppveyorEnv(sys.argv[1])
 
 if __name__ == '__main__':
 	main()
