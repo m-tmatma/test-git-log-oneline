@@ -188,6 +188,12 @@ class AppveyorEnv():
 					fout.write("set " + key + "=" + "\n")
 		print ("wrote " + file)
 
+	def saveAppveyorAllEnv(self, file):
+		with open(file, "w") as fout:
+			for key in os.environ.keys():
+				fout.write("set " + key + "=" + os.environ[key] + "\n")
+		print ("wrote " + file)
+
 def main():
 	appveyor = AppveyorEnv()
 	appveyor.printAll()
@@ -199,6 +205,9 @@ def main():
 	
 	if len(sys.argv) > 1:
 		appveyor.saveAppveyorEnv(sys.argv[1])
+	
+	if len(sys.argv) > 2:
+		appveyor.saveAppveyorAllEnv(sys.argv[2])
 
 if __name__ == '__main__':
 	main()
