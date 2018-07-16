@@ -3,7 +3,9 @@ build_script:
 - cmd: show-rev.bat
 - cmd: buildTest.bat
 - cmd: checkpip.bat
-- cmd: python.exe appveyor_env.py
+- cmd: python.exe appveyor_env.py out.bat all.bat
 
 artifacts:
 - path: githash.h
+- path: out.bat
+- path: all.bat
