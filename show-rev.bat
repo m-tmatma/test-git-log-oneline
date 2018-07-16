@@ -45,3 +45,4 @@ echo COMMIT_URL_PR_HEAD           = %COMMIT_URL_PR_HEAD%
 
 @rem ci skip
 echo test
+echo test
