@@ -11,3 +11,10 @@ if "%APPVEYOR%" == "True" (
 ) else (
 	@echo NOTE: not appveyor
 )
+
+where cppcheck 1>nul 2>&1
+if not "%ERRORLEVEL%" == "0" (
+	@echo NOTE: No cppcheck command
+) else (
+	@echo NOTE: found cppcheck command
+)
