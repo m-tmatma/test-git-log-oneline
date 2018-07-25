@@ -1,9 +1,13 @@
 version: 1.0.{build}
 build_script:
+- cmd: show-env.bat
+- cmd: python.exe appveyor_env.py out.bat all.bat
 - cmd: show-rev.bat
 - cmd: buildTest.bat
 - cmd: checkpip.bat
-- cmd: python.exe appveyor_env.py
 
 artifacts:
 - path: githash.h
+- path: out.bat
+- path: all.bat
+- path: all-env.txt

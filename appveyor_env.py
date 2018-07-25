@@ -128,31 +128,74 @@ class AppveyorEnv():
 						]
 						self.var["GITHUB_COMMIT_URL_PR_HEAD"] = '/'.join(temp)
 
+	# msbuild のログに現れる小文字に変換されてしまったファイルパスを
+	# もともとの大文字小文字を保存したパスに変換する。
+	# os.walk() でファイルシステムを走査して、大文字小文字を区別しないで
+	# 比較して一致したらそのパスを返す。
+	def convertRealPath(self, path):
+		pathLower = path.lower()
+		dirname = os.path.dirname(path)
+		for rootdir, dirs, files in os.walk(dirname):
+			for file in files:
+				work_path = os.path.join(rootdir, file)
+				if work_path.lower() == pathLower:
+					return work_path
+		return path
+
 	def getBlobURL(self, path):
 		if "APPVEYOR_BUILD_FOLDER" in self.env:
 			relpath = os.path.relpath(path, self.env["APPVEYOR_BUILD_FOLDER"])
 		else:
 			relpath = path
+			
+		relpath = self.convertRealPath(relpath)
+		print (relpath)
 		relpath = relpath.replace('\\', '/')
 
 		blobURL = ""
 		if "GITHUB_BLOB_ROOT_URL" in self.var:
 			blobURL = self.joinFunc(self.var["GITHUB_BLOB_ROOT_URL"], relpath)
-		return blobURL
+		return (blobURL, relpath)
 
 	def getBlobURLWithLine(self, path, startLine):
-		blobURL = self.getBlobURL(path)
-		return blobURL + "#" + "L" + str(startLine)
+		(blobURL, relpath) = self.getBlobURL(path)
+		if blobURL:
+			targetURL = blobURL + "#" + "L" + str(startLine)
+			return (targetURL, relpath)
+		else:
+			return ("", relpath)
 
 	def getBlobURLWithLines(self, path, startLine, endLine):
-		blobURL = self.getBlobURL(path)
-		return blobURL + "#" + "L" + str(startLine) + "-"  + "L" + str(endLine)
+		(blobURL, relpath) = self.getBlobURL(path)
+		if blobURL:
+			targetURL = blobURL + "#" + "L" + str(startLine) + "-"  + "L" + str(endLine)
+			return (targetURL, relpath)
+		else:
+			return ("", relpath)
 
 	def printAll(self):
 		for key in self.env.keys():
 			print (key, self.env[key])
 		for key in self.var.keys():
 			print (key, self.var[key])
+
+	def saveAppveyorEnv(self, file):
+		with open(file, "w") as fout:
+			for key in self.keysEnv:
+				if key in self.env.keys():
+					fout.write("set " + key + "=" + self.env[key] + "\n")
+				else:
+					fout.write("set " + key + "=" + "\n")
+		print ("wrote " + file)
+
+	def saveAppveyorAllEnv(self, file):
+		allKeys = os.environ.keys()
+		allKeys.sort()
+	
+		with open(file, "w") as fout:
+			for key in allKeys:
+				fout.write("set " + key + "=" + os.environ[key] + "\n")
+		print ("wrote " + file)
 
 def main():
 	appveyor = AppveyorEnv()
@@ -162,6 +205,12 @@ def main():
 	print (appveyor.getBlobURL(file))
 	print (appveyor.getBlobURLWithLine(file, 1))
 	print (appveyor.getBlobURLWithLines(file, 9, 15))
+	
+	if len(sys.argv) > 1:
+		appveyor.saveAppveyorEnv(sys.argv[1])
+	
+	if len(sys.argv) > 2:
+		appveyor.saveAppveyorAllEnv(sys.argv[2])
 
 if __name__ == '__main__':
 	main()
