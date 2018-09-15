@@ -4,6 +4,7 @@ build_script:
 - cmd: buildTest.bat
 - cmd: checkpip.bat
 - cmd: python.exe appveyor_env.py
+- cmd: checkMingW.bat
 
 artifacts:
 - path: githash.h
